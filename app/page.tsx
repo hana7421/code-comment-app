@@ -136,12 +136,13 @@ export default function Home() {
               💡
             </Box>
             <Typography variant="body1" color="textSecondary" sx={{ paddingLeft: 4 }}>
-            {hint.split(' ').map((word, index) => (
-              <span key={index}>
-                {word.includes('`') ? <code>{word.replace(/`/g, '')}</code> : word}{' '}
-              </span>
-            ))}
-          </Typography>
+              {hint.split(/(。| - )/).map((part, index) => (
+                <span key={index}>
+                  {part}
+                  {(part === "。" || part === " - ") && <br />}
+                </span>
+              ))}
+            </Typography>
             </Box>
           )}
           {/* コード入力 */}
