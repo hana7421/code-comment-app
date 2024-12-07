@@ -1,16 +1,22 @@
 'use client';
 
 import { Button,Box, Stack, Typography, Container,TextField } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import analyzeComment from "@/utils/analyzeComment";
 import { ResultTypes } from "@/types";
+import questions from "@/app/problems";
 
 
 export default function Home() {
-  const [code, setCode] = useState("console.log('Hello, World2!');");//後から編集する、DBから取得？
-
+  // const [code, setCode] = useState("console.log('Hello, World2!');");//後から編集する、DBから取得？
+  const [code, setCode] = useState<string>("読み込み中...");
   const [score, setScore] = useState<number | null>(null);
   const [feedback, setFeedback] = useState<string>("");
+
+  useEffect(() => {
+    // 初期問題を設定
+    setCode(questions[0]);
+  }, []);
 
   const handleClick = async (): Promise<void> => {
     try{
