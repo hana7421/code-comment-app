@@ -6,12 +6,18 @@ import analyzeComment from "@/utils/analyzeComment";
 import { ResultTypes } from "@/types";
 import { getProblemByTitle ,getTitles} from "@/app/problems";
 import { useRouter } from "next/navigation";
+import { addProblem, getProblems, getProblemById } from "../database/database";
 
 
 export default function Home() {
   const [code, setCode] = useState("");
-  const [score, setScore] = useState<number | null>(null);
-  const [feedback, setFeedback] = useState<string>("");
+  const [score_know, setScore_know] = useState<number | null>(null);
+  const [score_appr, setScore_appr] = useState<number | null>(null);
+  const [score_clar, setScore_clar] = useState<number | null>(null);
+  const [score_cons, setScore_cons] = useState<number | null>(null);
+  const [score_usef, setScore_usef] = useState<number | null>(null);
+  const [feedback_code, setFeedback_code] = useState<string>("");
+  const [feedback_come, setFeedback_come] = useState<string>("");
   const [selectedProblem, setSelectedProblem] = useState<string>("");
   const [state, setState] = useState<number>(100);
 
@@ -22,10 +28,11 @@ export default function Home() {
 
   const questionNameList:string[] = getTitles();
 
-  // useEffect(() => {
-  //   setCode(questions[0]);
-  // }
-  // , []);
+  useEffect(() => {
+    // // データを取得して表示
+    // console.log(getProblems());
+    // setCode(getProblems()[0]);
+  }, []);
   
   const handleClick = async (): Promise<void> => {
     try{
@@ -33,10 +40,18 @@ export default function Home() {
     //戻り値はJSON形式でスコアとフィードバック
     const analyzedResult: ResultTypes = await analyzeComment(code);
     
-    setScore(analyzedResult.scores.appropriateness);
-    setFeedback(analyzedResult.feedbacks.codeFeedback);
+    setScore_know(analyzedResult.scores.knowledge);
+    setScore_appr(analyzedResult.scores.appropriateness);
+    setScore_clar(analyzedResult.scores.clarity);
+    setScore_cons(analyzedResult.scores.consistency);
+    setScore_usef(analyzedResult.scores.usefulness);
+    setFeedback_code(analyzedResult.feedbacks.codeFeedback);
+    setFeedback_come(analyzedResult.feedbacks.commentFeedback);
     
-
+    addProblem(code, score_know, score_appr, score_clar, score_cons, score_usef, feedback_code, feedback_come);
+    console.log(getProblems());
+    setCode(getProblems()[1].feedback_code);
+    setState(102);
     
     }catch(e){
       console.log(`採点中にエラーだよ${e}`);
@@ -126,13 +141,13 @@ export default function Home() {
             {/* コードの理解 */}
             <Grid item xs={6} sx={{ overflow: "hidden" }}>
               <Typography>コードの理解</Typography>
-              <Typography>点数:{score} / 10</Typography>
+              <Typography>点数:{score_know} / 10</Typography>
             </Grid>
 
             {/* コメントの評価 */}
             <Grid item xs={6} sx={{ overflow: "hidden" }}>
               <Typography>コメントの評価</Typography>
-              <Typography>点数:{score} / 10</Typography>
+              <Typography>点数:{score_clar} / 10</Typography>
             </Grid>
 
             {/* コードの理解についてのフィードバック */}
