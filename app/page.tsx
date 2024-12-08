@@ -101,7 +101,7 @@ export default function Home() {
   };
 
   const calculateEditorHeight = (code: string): string => {
-    const lineHeight = 18; // 1行の高さ (ピクセル)
+    const lineHeight = 22; // 1行の高さ (ピクセル)
     const numberOfLines = code.split('\n').length;
     const height = numberOfLines * lineHeight;
     return `${Math.max(height, 100)}px`; // 最低でも100pxの高さを保証
@@ -187,7 +187,7 @@ export default function Home() {
             value={code}  // エディタの内容
             onChange={handleEditorChange}  // 内容が変更されたときに実行される
             options={{
-              readOnly: state === 100,  // stateが100の場合は読み取り専用に設定
+              readOnly: state !== 100,  // stateが100の場合は読み取り専用に設定
               theme: 'vs',  // テーマ設定（vsはVisual Studioのようなテーマ）
               scrollBeyondLastLine: false,  // 最後の行を越えてスクロールできないようにする
               wordWrap: "on",  // テキストの折り返しを有効にする

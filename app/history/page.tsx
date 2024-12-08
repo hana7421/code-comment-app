@@ -42,7 +42,7 @@ export default function History() {
       <Typography variant="h4" gutterBottom>
         履歴
       </Typography>
-      {pre.reverse().map((his)=>(
+      {[...pre].reverse().map((his)=>(
           <Box sx={{ border: "1px solid #000", padding: 2, maxWidth: "100%", margin:"20px"}} key={his.id}>
             <SyntaxHighlighter
                 language="javascript"
